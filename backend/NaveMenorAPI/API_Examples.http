@@ -1,0 +1,142 @@
+### Ejemplos de uso de la API de Naves Menores
+### Este archivo contiene ejemplos de peticiones HTTP para probar la API
+### Puede usarse con extensiones de VS Code como "REST Client" o cualquier cliente HTTP
+
+@baseUrl = https://localhost:5001
+@contentType = application/json
+
+### 1. Obtener todas las naves menores
+GET {{baseUrl}}/api/naves
+Accept: {{contentType}}
+
+###
+
+### 2. Obtener una nave específica por ID
+GET {{baseUrl}}/api/naves/1
+Accept: {{contentType}}
+
+###
+
+### 3. Crear una nueva nave menor
+POST {{baseUrl}}/api/naves
+Content-Type: {{contentType}}
+
+{
+  "nombre": "La Gaviota",
+  "matricula": "VAL-12345",
+  "tipo": "Pesquero",
+  "eslora": 12.5,
+  "manga": 4.2,
+  "puntal": 2.8,
+  "material": "Fibra de vidrio",
+  "anioConstruccion": 2020,
+  "puertoBase": "Valparaíso",
+  "capacidadTripulacion": 6,
+  "propietarioId": 1,
+  "observaciones": "En buen estado, equipada con GPS y radio VHF"
+}
+
+###
+
+### 4. Crear otra nave menor
+POST {{baseUrl}}/api/naves
+Content-Type: {{contentType}}
+
+{
+  "nombre": "El Delfín",
+  "matricula": "COQ-98765",
+  "tipo": "Recreación",
+  "eslora": 8.3,
+  "manga": 2.9,
+  "puntal": 1.8,
+  "material": "Aluminio",
+  "anioConstruccion": 2022,
+  "puertoBase": "Coquimbo",
+  "capacidadTripulacion": 4,
+  "propietarioId": 1,
+  "observaciones": "Uso recreativo familiar"
+}
+
+###
+
+### 5. Actualizar una nave existente
+PUT {{baseUrl}}/api/naves/1
+Content-Type: {{contentType}}
+
+{
+  "id": 1,
+  "nombre": "La Gaviota II",
+  "matricula": "VAL-12345",
+  "tipo": "Pesquero",
+  "eslora": 12.5,
+  "manga": 4.2,
+  "puntal": 2.8,
+  "material": "Fibra de vidrio",
+  "anioConstruccion": 2020,
+  "puertoBase": "Valparaíso",
+  "capacidadTripulacion": 6,
+  "propietarioId": 1,
+  "observaciones": "Renovada con nuevos equipos de navegación"
+}
+
+###
+
+### 6. Eliminar una nave (eliminación lógica)
+DELETE {{baseUrl}}/api/naves/1
+
+###
+
+### 7. Intentar crear nave con matrícula duplicada (debe fallar)
+POST {{baseUrl}}/api/naves
+Content-Type: {{contentType}}
+
+{
+  "nombre": "Nave Duplicada",
+  "matricula": "VAL-12345",
+  "tipo": "Pesquero",
+  "eslora": 10.0,
+  "manga": 3.5,
+  "puntal": 2.0,
+  "propietarioId": 1
+}
+
+###
+
+### 8. Intentar crear nave con dimensiones inválidas (manga > eslora, debe fallar)
+POST {{baseUrl}}/api/naves
+Content-Type: {{contentType}}
+
+{
+  "nombre": "Nave Inválida",
+  "matricula": "VAL-99999",
+  "tipo": "Pesquero",
+  "eslora": 5.0,
+  "manga": 10.0,
+  "puntal": 2.0,
+  "propietarioId": 1
+}
+
+###
+
+### 9. Intentar crear nave sin campos obligatorios (debe fallar)
+POST {{baseUrl}}/api/naves
+Content-Type: {{contentType}}
+
+{
+  "nombre": "",
+  "matricula": "",
+  "eslora": 0,
+  "manga": 0,
+  "puntal": 0
+}
+
+###
+
+### Notas:
+### - Antes de probar estos endpoints, asegúrate de que:
+###   1. La API esté ejecutándose (dotnet run)
+###   2. La base de datos esté creada y las migraciones aplicadas
+###   3. Exista al menos un Propietario con ID 1 en la base de datos
+###
+### - Los endpoints están documentados en Swagger: https://localhost:5001/swagger
+### - Todos los endpoints pueden requerir autenticación JWT en producción
